@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="transmove_quotations_action" model="ir.actions.act_window">
+        <field name="name">Quotations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">transmove.quotations</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem
+        id="transmove_menu_root"
+        name="Transmove"
+        action="transmove_quotations_action"/>
+
+    <menuitem
+        id="transmove_sub_menu"
+        name="Sub Menu"
+        action="transmove_quotations_action"
+        parent="transmove_menu_root"
+        />
+
+    <menuitem
+        id="transmove_secondsub_menu"
+        name="Quotations"
+        action="transmove_quotations_action"
+        parent="transmove_sub_menu"
+        />
+</odoo>
