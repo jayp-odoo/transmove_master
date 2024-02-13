@@ -6,4 +6,31 @@
         <field name="res_model">transmove.quotations</field>
         <field name="view_mode">tree,form</field>
     </record>
+    <record id="transmove_quotations_view_tree" model="ir.ui.view">
+        <field name="name">transmove.quotations.tree</field>
+        <field name="model" >transmove.quotations</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="customer_name" />
+                <field name="origin" />
+                <field name="destination" />
+                <field name="mode_of_transport" />
+                <field name="weight" />
+                <field name="Quantity" />
+                <field name="expiration_date" />
+            </tree>
+        </field>
+    </record>
+    <record id="transmove_quotations_view_search" model="ir.ui.view">
+        <field name="name">transmove.quotations.view.search</field>
+        <field name="model">transmove.quotations</field>
+        <field name="arch" type="xml">
+            <search string="Se">
+                <field name="customer_name" />
+                <field name="mode_of_transport" />
+                <filter name="airmode" string="Air Mode" domain="[('mode_of_transport','=','air')]" />
+                <filter name="seamode" string="Sea Mode" domain="[('mode_of_transport','=','sea')]"></filter>
+            </search>
+        </field>
+    </record>
 </odoo>
