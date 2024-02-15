@@ -11,13 +11,15 @@
         <field name="model" >transmove.quotations</field>
         <field name="arch" type="xml">
             <tree string="">
-                <field name="customer_name" />
+                <field name="customer_id" />
+                <field name="estimated_cost" />
                 <field name="origin" />
                 <field name="destination" />
                 <field name="mode_of_transport" />
                 <field name="weight" />
-                <field name="Quantity" />
                 <field name="expiration_date" />
+                <field name="transit_time" />
+                <field name="type_of_goods" />
             </tree>
         </field>
     </record>
@@ -26,11 +28,48 @@
         <field name="model">transmove.quotations</field>
         <field name="arch" type="xml">
             <search string="Se">
-                <field name="customer_name" />
+                <field name="customer_id" />
                 <field name="mode_of_transport" />
                 <filter name="airmode" string="Air Mode" domain="[('mode_of_transport','=','air')]" />
                 <filter name="seamode" string="Sea Mode" domain="[('mode_of_transport','=','sea')]"></filter>
             </search>
+        </field>
+    </record>
+    <record id="transmove_quotations_view_form" model="ir.ui.view">
+        <field name="name">transmove.quotations.form</field>
+        <field name="model">transmove.quotations</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group name="cust" class="h1" >
+                        <field name="customer_id" nolabel="1" style="width:900px;"></field>
+                    </group>
+                    <group name="shipmentdetails" string="Shipment details">
+                        <group>
+                            <field name="origin"/>
+                            <field name="destination" />
+                            <field name="weight" />
+                            <field name="Quantity" />
+                            <field name="type_of_goods" />
+                        </group>
+                        <group >
+                            <field name="mode_of_transport" />
+                            <field name="expiration_date" />
+                            <field name="estimated_cost" />
+                            <field name="transit_time" />
+                            <field name="status" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="other" string="Other info">
+                            <group>
+                                <field name="description" style="background-color:#f3faff;"/>
+                                <field name="terms_conditions" style="background-color:#f3faff;"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
         </field>
     </record>
 </odoo>
