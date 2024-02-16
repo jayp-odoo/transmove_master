@@ -2,7 +2,6 @@
 <odoo>
     <record id="transmove_quotations_action" model="ir.actions.act_window">
         <field name="name">Quotations</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">transmove.quotations</field>
         <field name="view_mode">tree,form</field>
     </record>
@@ -12,14 +11,14 @@
         <field name="arch" type="xml">
             <tree string="">
                 <field name="customer_id" />
-                <field name="estimated_cost" />
                 <field name="origin" />
                 <field name="destination" />
                 <field name="mode_of_transport" />
                 <field name="weight" />
-                <field name="expiration_date" />
                 <field name="transit_time" />
                 <field name="type_of_goods" />
+                <field name="status" />
+                <field name="estimated_cost" />
             </tree>
         </field>
     </record>
@@ -58,6 +57,7 @@
                             <field name="estimated_cost" />
                             <field name="transit_time" />
                             <field name="status" />
+                            <field name="airline_id" />
                         </group>
                     </group>
                     <notebook>

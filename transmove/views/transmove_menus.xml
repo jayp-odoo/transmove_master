@@ -9,6 +9,17 @@
         name="Quotations"
         action="transmove_quotations_action"
         parent="transmove_menu_root"
-        
         />
+    <menuitem 
+        id="transmove_sub_menu2"
+        name="Settings"
+        action="transmove_airlines_action"
+        parent="transmove_menu_root"
+    />
+    <menuitem 
+        id="transmove_sub_menu2_child1"
+        name="All Airlines"
+        action="transmove_airlines_action"
+        parent="transmove_sub_menu2"
+    />
 </odoo>

@@ -1,7 +1,7 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
-class AirLines(models.Model):
+class TransmoveAirLines(models.Model):
     """this model is used to represent multiple types of airline companies"""
 
     _name = "transmove.airlines"
@@ -10,4 +10,4 @@ class AirLines(models.Model):
     name = fields.Char(string="Airline name", required=True)
     contact_no = fields.Char(string="Contact Number", required=True)
     email = fields.Char(string="Email", required=True)
-    estimated_price_kg = fields.float(string="Estimated Price per kg")
+    estimated_price_kg = fields.Float(string="Estimated Price per kg")

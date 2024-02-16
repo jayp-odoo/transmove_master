@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="transmove_airlines_action" model="ir.actions.act_window">
+        <field name="name">Airlines</field>
+        <field name="res_model">transmove.airlines</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="transmove_airlines_view_tree" model="ir.ui.view">
+        <field name="name">transmove.airlines.tree</field>
+        <field name="model">transmove.airlines</field>
+        <field name="arch" type="xml" >
+            <tree>
+                <field name="name" />
+                <field name="estimated_price_kg" />
+                <field name="contact_no" />
+                <field name="email" />
+            </tree>
+        </field>
+    </record>
+    <record id="transmove_airlines_view_form" model="ir.ui.view">
+        <field name="name">transmove.airlines.form</field>
+        <field name="model">transmove.airlines</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="name" class="h1" placeholder="Airline Name"/>
+                    <group >
+                        <group >
+                            <field name="contact_no" />
+                            <field name="email" />
+                        </group>
+                        <group >
+                            <field name="estimated_price_kg" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

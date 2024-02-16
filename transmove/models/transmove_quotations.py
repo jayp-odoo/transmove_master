@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import api, fields, models
 
 goods_type = [
     ("general cargo", "General Cargo"),
@@ -11,7 +11,7 @@ goods_type = [
 ]
 
 
-class Quotations(models.Model):
+class TransmoveQuotations(models.Model):
     """this class is used to store the quotations created by administration"""
 
     _name = "transmove.quotations"
@@ -45,4 +45,4 @@ class Quotations(models.Model):
         ],
         default="pending",
     )
-    # airline_company =
+    airline_id = fields.Many2one("transmove.airlines", tracking=True)
