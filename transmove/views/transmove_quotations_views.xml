@@ -3,23 +3,102 @@
     <record id="transmove_quotations_action" model="ir.actions.act_window">
         <field name="name">Quotations</field>
         <field name="res_model">transmove.quotations</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,kanban</field>
     </record>
     <record id="transmove_quotations_view_tree" model="ir.ui.view">
         <field name="name">transmove.quotations.tree</field>
         <field name="model" >transmove.quotations</field>
         <field name="arch" type="xml">
-            <tree string="">
+            <tree string="" decoration-success="state in ['won']" decoration-bf="state in ['won']" decoration-danger="state in ['canceled']" decoration-info="state in ['sent']">
                 <field name="customer_id" />
-                <field name="origin" />
-                <field name="destination" />
+                <field name="origin_city_id" />
+                <field name="destination_city_id" />
                 <field name="mode_of_transport" />
                 <field name="weight" />
                 <field name="transit_time" />
                 <field name="type_of_goods" />
-                <field name="status" />
                 <field name="estimated_cost" />
+                <field name="state" invisible="1" nolabel="1"/>
             </tree>
+        </field>
+    </record>
+    <record id="transmove_quotations_view_form" model="ir.ui.view">
+        <field name="name">transmove.quotations.form</field>
+        <field name="model">transmove.quotations</field>
+        <field name="arch" type="xml">
+            <form >
+                <header>
+                    <button name="action_quotation_send" type="object" string="Send" invisible="state not in ['new']" class="btn-primary"/>
+                    <button name="action_quotation_cancel" type="object" string="Cancel" invisible="state in ['canceled','won']" class="btn-warning"/>
+                    <button name="action_quotation_won" type="object" string="Confirm" invisible="state in ['won','canceled','new']" class="btn-success"/>
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet style="background-color: #f2f2f2;">
+                    <group name="cust" class="h1" >
+                        <field name="customer_id" nolabel="1" style="width:900px;"></field>
+                    </group>
+                    <group name="shipmentdetails" string="Shipment details">
+                        <group>
+                            <field name="priority" />
+                            <field name="weight" />
+                            <field name="Quantity" />
+                            <field name="type_of_goods" />
+                            <field name="mode_of_transport" />
+                        </group>
+                        <group >
+                            <field name="expiration_date" />
+                            <field name="estimated_cost" />
+                            <field name="transit_time" />
+                            <field name="airline_id" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="addressinfo" string="Address Information">
+                            <group>
+                                <field name="origin_city_id" />
+                                <field name="destination_city_id" />
+                            </group>
+                        </page>
+                        <page name="other" string="Other info">
+                            <group>
+                                <field name="description" style="background-color:#f3faff;"/>
+                                <field name="terms_conditions" style="background-color:#f3faff;"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="transmove_quotations_view_kanban" model="ir.ui.view">
+        <field name="name">transmove.quotations.view.kanban</field>
+        <field name="model">transmove.quotations</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column o_kanban_project_tasks">
+                <progressbar field="priority" colors='{"3": "success", "2": "warning", "1": "danger", "0": "info"}'/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_content oe_kanban_global_click">
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>
+                                        <field name="customer_id"/>
+                                    </strong>
+                                </div>
+                                <div class="col-6">
+                                    <span class="float-end">
+                                        <field name="mode_of_transport"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
     <record id="transmove_quotations_view_search" model="ir.ui.view">
@@ -29,47 +108,11 @@
             <search string="Se">
                 <field name="customer_id" />
                 <field name="mode_of_transport" />
+                <filter name="wonstg" string="Won stage" domain="[('state','=','won')]" />
+                <filter name="canceledstg" string="Canceled stage" domain="[('state','=','canceled')]" />
                 <filter name="airmode" string="Air Mode" domain="[('mode_of_transport','=','air')]" />
                 <filter name="seamode" string="Sea Mode" domain="[('mode_of_transport','=','sea')]"></filter>
             </search>
-        </field>
-    </record>
-    <record id="transmove_quotations_view_form" model="ir.ui.view">
-        <field name="name">transmove.quotations.form</field>
-        <field name="model">transmove.quotations</field>
-        <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <group name="cust" class="h1" >
-                        <field name="customer_id" nolabel="1" style="width:900px;"></field>
-                    </group>
-                    <group name="shipmentdetails" string="Shipment details">
-                        <group>
-                            <field name="origin"/>
-                            <field name="destination" />
-                            <field name="weight" />
-                            <field name="Quantity" />
-                            <field name="type_of_goods" />
-                        </group>
-                        <group >
-                            <field name="mode_of_transport" />
-                            <field name="expiration_date" />
-                            <field name="estimated_cost" />
-                            <field name="transit_time" />
-                            <field name="status" />
-                            <field name="airline_id" />
-                        </group>
-                    </group>
-                    <notebook>
-                        <page name="other" string="Other info">
-                            <group>
-                                <field name="description" style="background-color:#f3faff;"/>
-                                <field name="terms_conditions" style="background-color:#f3faff;"/>
-                            </group>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
         </field>
     </record>
 </odoo>

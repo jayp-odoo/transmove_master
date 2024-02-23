@@ -1,6 +1,6 @@
 {
     "name": "transmove",
-    "depends": ["base"],
+    "depends": ["base", "mail", "base_address_extended"],
     "data": [
         "security/ir.model.access.csv",
         "views/transmove_quotations_views.xml",
