@@ -19,6 +19,7 @@ class TransmoveQuotations(models.Model):
     _inherit = ["mail.thread"]
 
     customer_id = fields.Many2one("res.partner", string="Customer", required=True)
+    salesperson_id = fields.Many2one("res.users", string="Salesperson")
     origin_city_id = fields.Many2one("res.city", string="Origin City")
     destination_city_id = fields.Many2one("res.city", string="Destination City")
     mode_of_transport = fields.Selection(
@@ -44,14 +45,7 @@ class TransmoveQuotations(models.Model):
         string="Transit Time (in days)",
         required=True,
     )
-    # status = fields.Selection(
-    #     selection=[
-    #         ("approved", "Approved"),
-    #         ("cancelled", "Cancelled"),
-    #         ("pending", "Pending"),
-    #     ],
-    #     default="pending",
-    # )
+
     airline_id = fields.Many2one("transmove.airlines", tracking=True)
     state = fields.Selection(
         string="Status",
@@ -64,6 +58,7 @@ class TransmoveQuotations(models.Model):
         ],
         copy=False,
         default="new",
+        group_expand="_expand_groups",
     )
 
     @api.depends("airline_id", "weight")
@@ -73,6 +68,10 @@ class TransmoveQuotations(models.Model):
                 record.estimated_cost = (
                     record.airline_id.estimated_price_kg * record.weight
                 )
+
+    @api.model
+    def _expand_groups(self, states, domain, order):
+        return ["new", "sent", "won", "canceled"]
 
     def action_quotation_send(self):
         """

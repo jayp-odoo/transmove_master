@@ -78,21 +78,38 @@
         <field name="name">transmove.quotations.view.kanban</field>
         <field name="model">transmove.quotations</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="state" class="o_kanban_small_column o_kanban_project_tasks">
+            <kanban default_group_by="state" >
                 <progressbar field="priority" colors='{"3": "success", "2": "warning", "1": "danger", "0": "info"}'/>
+                <field name="state" />
                 <templates>
                     <t t-name="kanban-box">
-                        <div t-attf-class="oe_kanban_content oe_kanban_global_click">
-                            <div class="row">
-                                <div class="col-6">
-                                    <strong>
-                                        <field name="customer_id"/>
-                                    </strong>
+                        <div  t-attf-class=" oe_kanban_global_click o_has_icon oe_kanban_content oe_kanban_card">
+                            <div class="o_kanban_card_content mw-100">
+                                <div class="o_kanban_primary_left row">
+                                    <div class="col">
+                                        <field name="customer_id" widget="many2one_avatar_user"/>
+                                        <strong>
+                                            <field name="customer_id" style="margin-left:15px;padding-bottom:15px;"/>
+                                        </strong>
+                                    </div>
                                 </div>
-                                <div class="col-6">
-                                    <span class="float-end">
-                                        <field name="mode_of_transport"/>
+                                <span>Transport Mode:
+                                    <field name="mode_of_transport" />
+                                </span>
+                                <div class="row">
+                                    <span>Type of Goods:
+                                        <field name="type_of_goods" />
                                     </span>
+                                </div>
+                                <div class="o_kanban_record_bottom mt-3">
+                                    <div class="oe_kanban_bottom_left">
+                                        <span>Estimated Cost:
+                                            <field name="estimated_cost" />
+                                        </span>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="salesperson_id" widget="many2one_avatar_user"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>

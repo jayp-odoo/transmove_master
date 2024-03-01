@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 transmove.access_transmove_quotations,access_transmove_quotations,transmove.model_transmove_quotations,base.group_user,1,1,1,1
 transmove.access_transmove_airlines,access_transmove_airlines,transmove.model_transmove_airlines,base.group_user,1,1,1,1
+transmove.access_transmove_orders,access_transmove_orders,transmove.model_transmove_orders,base.group_user,1,1,1,1

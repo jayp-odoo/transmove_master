@@ -9,12 +9,21 @@
         name="Quotations"
         action="transmove_quotations_action"
         parent="transmove_menu_root"
+        sequence="1"
         />
+    <menuitem
+        id="transmove_sub_menu3"
+        name="Orders"
+        action="transmove_orders_action"
+        sequence="2"
+        parent="transmove_menu_root"
+       />
     <menuitem 
         id="transmove_sub_menu2"
         name="Settings"
         action="transmove_airlines_action"
         parent="transmove_menu_root"
+        sequence="3"
     />
     <menuitem 
         id="transmove_sub_menu2_child1"
