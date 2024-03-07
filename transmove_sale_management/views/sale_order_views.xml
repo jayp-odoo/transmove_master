@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_form_inherit_transmove_sale_management" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.transmove_sale_management</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_management.sale_order_form_quote" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='partner_details']" position="inside">
+                <field name="weight"></field>
+                <field name="Quantity"></field>
+                <field name="type_of_goods" />
+            </xpath>
+            <xpath expr="//group[@name='order_details']" position="inside">
+                <field name="estimated_cost" />
+                <field name="transit_time" />
+                <field name="airline_id" />
+            </xpath>
+            <xpath expr="//page[@name='order_lines']" position="attributes">
+                <attribute name="invisible" >1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='order_lines']" position="after">
+                <page string="Address Information">
+                    <group name="addressinfo">
+                        <field name="origin_city_id" />
+                        <field name="destination_city_id" />
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//field[@name='sale_order_template_id']" position="replace">
+                
+            </xpath>
+            <xpath expr="//page[@name='optional_products']" position="replace">
+                
+            </xpath>
+        </field>
+    </record>
+    <record id="sale_order_kanban_inherit_transmove_sale_management" model="ir.ui.view">
+        <field name="name">sale.order.kanban.inherit.transmove_sale_management</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sale_order_kanban" />
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="replace">
+                <kanban default_group_by="state" >
+                    <progressbar field="priority" colors='{"3": "success", "2": "warning", "1": "danger", "0": "info"}'/>
+                    <field name="state" />
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div  t-attf-class=" oe_kanban_global_click o_has_icon oe_kanban_content oe_kanban_card">
+                                <div class="o_kanban_card_content mw-100">
+                                    <div class="o_kanban_primary_left row">
+                                        <div class="col">
+                                            <field name="partner_id" widget="many2one_avatar_user"/>
+                                            <strong>
+                                                <field name="partner_id" style="margin-left:15px;padding-bottom:15px;"/>
+                                            </strong>
+                                        </div>
+                                    </div>
+                                    <span>Transport Mode:
+                                        <field name="mode_of_transport" />
+                                    </span>
+                                    <div class="row">
+                                        <span>Type of Goods:
+                                            <field name="type_of_goods" />
+                                        </span>
+                                    </div>
+                                    <div class="o_kanban_record_bottom mt-3">
+                                        <div class="oe_kanban_bottom_left">
+                                            <span>Estimated Cost:
+                                                <field name="estimated_cost" />
+                                            </span>
+                                        </div>
+                                        <div class="oe_kanban_bottom_right">
+                                            <field name="user_id" widget="many2one_avatar_user"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </xpath>
+        </field>
+    </record>
+</odoo>
