@@ -24,6 +24,10 @@
                         <field name="origin_city_id" />
                         <field name="destination_city_id" />
                     </group>
+                    <group name="tandc" string="Instructions Details">
+                        <field name="description"></field>
+                        <field name="terms_conditions"></field>
+                    </group>
                 </page>
             </xpath>
             <xpath expr="//field[@name='sale_order_template_id']" position="replace">

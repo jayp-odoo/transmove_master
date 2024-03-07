@@ -3,28 +3,40 @@
     <menuitem
         id="transmove_menu_root"
         name="Transmove"
-        web_icon="transmove,static/description/icon.png"
-        action="transmove_quotations_action"/>
-    <menuitem
-        id="transmove_sub_menu"
-        name="Quotations"
-        action="transmove_quotations_action"
-        parent="transmove_menu_root"
         sequence="1"
-        />
+        web_icon="transmove,static/description/icon.png"
+        action="sale.action_quotations_with_onboarding"/>
     <menuitem
         id="transmove_sub_menu3"
         name="Orders"
-        action="transmove_orders_action"
         sequence="2"
         parent="transmove_menu_root"
-       />
+       >
+        <menuitem
+        id="transmove_quotations_menu"
+        name="Quotations"
+        action="sale.action_quotations_with_onboarding"
+        />
+        <menuitem
+        id="transmove_orders_menu"
+        name="Orders"
+        action="sale.action_orders"
+        />
+       </menuitem>
+    <menuitem 
+        id="transmove_sub_menu4"
+        name="Bookings"
+        action="transmove_bookings_action"
+        parent="transmove_menu_root"
+        sequence="3"
+        
+    />
     <menuitem 
         id="transmove_sub_menu2"
         name="Settings"
         action="transmove_airlines_action"
         parent="transmove_menu_root"
-        sequence="3"
+        sequence="4"
     />
     <menuitem 
         id="transmove_sub_menu2_child1"

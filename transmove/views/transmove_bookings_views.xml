@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="transmove_bookings_action" model="ir.actions.act_window">
+        <field name="name">bookings</field>
+        <field name="res_model">transmove.bookings</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="transmove_bookings_view_tree" model="ir.ui.view">
+        <field name="name">transmove.bookings.view.tree</field>
+        <field name="model">transmove.bookings</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="order_id"></field>
+                <field name="airway_bill_number" />
+                <field name="departure_date" />
+                <field name="arrival_date" />
+                <field name="state" widget="badge" decoration-success="state == 'custom_cleared'" decoration-info="state == 'draft'" decoration-primary="state == 'confirmed'"/>
+            </tree>
+        </field>
+    </record>
+</odoo>
