@@ -2,7 +2,7 @@
 <odoo>
     <menuitem
         id="transmove_menu_root"
-        name="Transmove"
+        name="TransMove"
         sequence="1"
         web_icon="transmove,static/description/icon.png"
         action="sale.action_quotations_with_onboarding"/>
@@ -26,9 +26,17 @@
     <menuitem 
         id="transmove_sub_menu4"
         name="Bookings"
-        action="transmove_bookings_action"
+        action="transmove_sale_management.transmove_bookings_action"
         parent="transmove_menu_root"
         sequence="3"
+        
+    />
+    <menuitem 
+        id="transmove_sub_menu5"
+        name="Pickup Requests"
+        action="transmove_sale_management.transmove_pickup_requests_action"
+        parent="transmove_menu_root"
+        sequence="4"
         
     />
     <menuitem 
@@ -36,7 +44,7 @@
         name="Settings"
         action="transmove_airlines_action"
         parent="transmove_menu_root"
-        sequence="4"
+        sequence="5"
     />
     <menuitem 
         id="transmove_sub_menu2_child1"

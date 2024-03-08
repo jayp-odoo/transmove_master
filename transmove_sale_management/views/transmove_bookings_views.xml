@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="transmove_bookings_action" model="ir.actions.act_window">
+        <field name="name">bookings</field>
+        <field name="res_model">transmove.bookings</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+    <!-- tree view  -->
+    <record id="transmove_bookings_view_tree" model="ir.ui.view">
+        <field name="name">transmove.bookings.view.tree</field>
+        <field name="model">transmove.bookings</field>
+        <field name="arch" type="xml">
+            <tree string="" decoration-primary="state in ['confirmed']" decoration-success="state in ['custom_cleared']">
+                <field name="currency" column_invisible="True" on_change="1" />
+                <field name="order_id"></field>
+                <field name="customer" />
+                <field name="airway_bill_number" />
+                <field name="origin_city" />
+                <field name="destination_city" />
+                <field name="departure_date" />
+                <field name="arrival_date" />
+                <field name="total_amount"  widget="monetary" decoration-bf="1"/>
+                <field name="state" widget="badge" decoration-success="state == 'custom_cleared'" decoration-info="state == 'draft'" decoration-primary="state == 'confirmed'"/>
+            </tree>
+        </field>
+    </record>
+    <!-- form view  -->
+    <record id="transmove_bookings_view_form" model="ir.ui.view">
+        <field name="name">transmove.bookings.view.form</field>
+        <field name="model">transmove.bookings</field>
+        <field name="arch" type='xml'>
+            <form>
+                <header>
+                    <button name="action_airline_confirm" type="object" string="Airline Booked" invisible="state not in ['draft']" class="btn-primary"/>
+                    <button name="action_airline_custom_cleared" type="object" string="Customs Cleared" invisible="state not in ['confirmed']" class="btn-success"/>
+                    <button name="action_cancelled" type="object" string="Cancel" invisible="state in ['cancelled']" class="btn-warning"/>
+                    <button name="action_backtodraft" type="object" string="Back to draft" invisible="state not in ['cancelled']" class="btn-info"/>
+                    <field name="state" widget="statusbar" options="{'clickable':'1'}"/>
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="order_id"></field>
+                    </h1>
+                    <group name="details" string="Details">
+                        <group name="g1">
+                            <field name="customer"></field>
+                            <field name="consignee" />
+                            <field name="airline"></field>
+                            <field name="type_of_good" />
+                            <field name="documentation_submitted" />
+                        </group>
+                        <group name="g2">
+                            <field name="total_amount" />
+                            <field name="airway_bill_number"></field>
+                            <field name="cargo_pickup_date" />
+                            <field name="departure_date"></field>
+                            <field name="arrival_date"></field>
+                            <field name="customs_clearance_date" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="otherinfo" string="Other info">
+                            <group name="other" >
+                                <field name="origin_city" />
+                                <field name="destination_city" />
+                                <field name="shipment_description" />
+                            </group>
+                        </page>
+                        <page name="documents" string="documents">
+                            <field name="document_ids" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="transmove_bookings_view_kanban" model="ir.ui.view">
+        <field name="name">transmove_bookings.view.kanban</field>
+        <field name="model">transmove.bookings</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" >
+                <progressbar field="priority" colors='{"3": "success", "2": "warning", "1": "danger", "0": "info"}'/>
+                <field name="state" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div  t-attf-class=" oe_kanban_global_click o_has_icon oe_kanban_content oe_kanban_card">
+                            <div class="o_kanban_card_content mw-100">
+                                <div class="o_kanban_primary_left row">
+                                    <div class="col">
+                                        <strong>
+                                            <h3>
+                                                <field name="order_id" style="padding-bottom:15px;"/>
+                                            </h3>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <span>Airline:
+                                        <strong>
+                                            <field name="airline"/>
+                                        </strong>
+                                    </span>
+                                    <span>Airway Bill:
+                                        <field name="airway_bill_number" />
+                                    </span>
+                                </div>
+                                <div class="o_kanban_record_bottom mt-3">
+                                    <div class="oe_kanban_bottom_left">
+                                        <span>Total Cost:
+                                            <field name="total_amount" widget="monetary" decoration-bf="1"/>
+                                        </span>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="user" widget="many2one_avatar_user"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+</odoo>

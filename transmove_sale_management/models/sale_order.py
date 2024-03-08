@@ -52,11 +52,17 @@ class SaleOrder(models.Model):
                     record.airline_id.estimated_price_kg * record.weight
                 )
 
-    @api.model
-    def _expand_groups(self, states, domain, order):
-        return ["draft", "sent", "sale", "cancel"]
-
     @api.depends("estimated_cost")
     def _compute_amounts(self):
         for record in self:
             record.amount_total = record.estimated_cost
+
+    @api.model
+    def _expand_groups(self, states, domain, order):
+        return ["draft", "sent", "sale", "cancel"]
+
+    def action_confirm(self):
+
+        booking_object = self.env["transmove.bookings"].create({"order_id": self.id})
+        self.env["transmove.pickup.requests"].create({"bookings_id": booking_object.id})
+        return super().action_confirm()

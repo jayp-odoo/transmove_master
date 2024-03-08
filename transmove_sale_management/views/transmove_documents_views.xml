@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="transmove_sale_documents_view_tree" model="ir.ui.view">
+        <field name="name">transmove_sale_documents.view.tree</field>
+        <field name="model">transmove.documents</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name" />
+                <field name="file" widget="binary" />
+            </tree>
+        </field>
+    </record>
+</odoo>
