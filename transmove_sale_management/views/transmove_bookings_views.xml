@@ -10,7 +10,7 @@
         <field name="name">transmove.bookings.view.tree</field>
         <field name="model">transmove.bookings</field>
         <field name="arch" type="xml">
-            <tree string="" decoration-primary="state in ['confirmed']" decoration-success="state in ['custom_cleared']">
+            <tree string="" decoration-primary="state in ['confirmed']" decoration-success="state in ['won']">
                 <field name="currency" column_invisible="True" on_change="1" />
                 <field name="order_id"></field>
                 <field name="customer" />
@@ -20,7 +20,7 @@
                 <field name="departure_date" />
                 <field name="arrival_date" />
                 <field name="total_amount"  widget="monetary" decoration-bf="1"/>
-                <field name="state" widget="badge" decoration-success="state == 'custom_cleared'" decoration-info="state == 'draft'" decoration-primary="state == 'confirmed'"/>
+                <field name="state" widget="badge" decoration-success="state == 'won'" decoration-info="state == 'draft'" decoration-primary="state == 'confirmed'"/>
             </tree>
         </field>
     </record>
@@ -32,10 +32,13 @@
             <form>
                 <header>
                     <button name="action_airline_confirm" type="object" string="Airline Booked" invisible="state not in ['draft']" class="btn-primary"/>
-                    <button name="action_airline_custom_cleared" type="object" string="Customs Cleared" invisible="state not in ['confirmed']" class="btn-success"/>
+                    <button name="action_load_to_container" type="object" string="Loaded" invisible="state not in ['received_at_origin']" class="btn-primary"/>
+                    <button name="action_airline_custom_cleared" type="object" string="Customs Cleared" invisible="state not in ['load_to_container']" class="btn-primary"/>
+                    <button name="action_on_the_sky" type="object" string="In Transit" invisible="state not in ['custom_cleared']" class="btn-primary"/>
+                    <button name="action_won" type="object" string="Won" invisible="state in ['draft','won','cancelled']" class="btn-success"/>
                     <button name="action_cancelled" type="object" string="Cancel" invisible="state in ['cancelled']" class="btn-warning"/>
                     <button name="action_backtodraft" type="object" string="Back to draft" invisible="state not in ['cancelled']" class="btn-info"/>
-                    <field name="state" widget="statusbar" options="{'clickable':'1'}"/>
+                    <field name="state" widget="statusbar" options="{'clickable':'1'}" statusbar_visible="draft,confirmed,custom_cleared"/>
                 </header>
                 <sheet>
                     <h1>
@@ -47,7 +50,7 @@
                             <field name="consignee" />
                             <field name="airline"></field>
                             <field name="type_of_good" />
-                            <field name="documentation_submitted" />
+                            <field name="priority" />
                         </group>
                         <group name="g2">
                             <field name="total_amount" />
@@ -71,9 +74,14 @@
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids"/>
+                </div>
             </form>
         </field>
     </record>
+    <!-- kanban view  -->
     <record id="transmove_bookings_view_kanban" model="ir.ui.view">
         <field name="name">transmove_bookings.view.kanban</field>
         <field name="model">transmove.bookings</field>
@@ -100,15 +108,13 @@
                                             <field name="airline"/>
                                         </strong>
                                     </span>
-                                    <span>Airway Bill:
-                                        <field name="airway_bill_number" />
+                                    <span>Total Cost:
+                                        <field name="total_amount" widget="monetary" decoration-bf="1"/>
                                     </span>
                                 </div>
                                 <div class="o_kanban_record_bottom mt-3">
                                     <div class="oe_kanban_bottom_left">
-                                        <span>Total Cost:
-                                            <field name="total_amount" widget="monetary" decoration-bf="1"/>
-                                        </span>
+                                        <field name="priority" widget="priority" />
                                     </div>
                                     <div class="oe_kanban_bottom_right">
                                         <field name="user" widget="many2one_avatar_user"/>

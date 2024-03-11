@@ -39,12 +39,18 @@
         sequence="4"
         
     />
+    <menuitem
+        id="transmove_customs_menu"
+        name="Custom Clearances"
+        action="transmove_sale_management.transmove_customs_action"
+        parent="transmove_menu_root"
+        sequence="5"/>
     <menuitem 
         id="transmove_sub_menu2"
         name="Settings"
         action="transmove_airlines_action"
         parent="transmove_menu_root"
-        sequence="5"
+        sequence="6"
     />
     <menuitem 
         id="transmove_sub_menu2_child1"

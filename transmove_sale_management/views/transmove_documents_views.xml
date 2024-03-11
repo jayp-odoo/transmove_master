@@ -10,4 +10,18 @@
             </tree>
         </field>
     </record>
+    <record id="transmove_documents_view_form" model="ir.ui.view">
+        <field name="name">transmove.documents.view.form</field>
+        <field name="model">transmove.documents</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="file" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
 </odoo>

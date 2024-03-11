@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="transmove_customs_action" model= "ir.actions.act_window">
+        <field name="name">Customs Clearances</field>
+        <field name="res_model">transmove.customs.clearance</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+    <!-- tree view  -->
+    <record id="transmove_customs_view_tree" model="ir.ui.view">
+        <field name="name">transmove.customs.view.tree</field>
+        <field name="model">transmove.customs.clearance</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="booking_id"></field>
+                <field name="documentation_submitted"  />
+                <field name="state" widget="badge"/>
+            </tree>
+        </field>
+    </record>
+    <!-- form view  -->
+    <record id="transmove_customs_view_form" model="ir.ui.view">
+        <field name="name">transmove_customs.view.form</field>
+        <field name="model">transmove.customs.clearance</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                    <button string="Confirm" name="action_confirm" type="object" class="oe_highlight" invisible="state not in ['draft']"/>
+                    <button string="Reject" name="action_reject" type="object" class="btn-danger" invisible="state in ['rejected','cancelled']"/>
+                    <button string="back to draft" name="action_back_to_draft" type="object" invisible="state not in ['cancelled']"/>
+                    <button string="Cancel" name="action_cancel" type="object" invisible="state in ['cancelled']" />
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group string="Details">
+                        <field name="booking_id" />
+                        <field name="documentation_submitted" />
+                        <field name="customs_clearance_date"></field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- kanban view  -->
+    <record id="transmove_customs_view_kanban" model="ir.ui.view">
+        <field name="name">transmove.customs.view.kanban</field>
+        <field name="model">transmove.customs.clearance</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" >
+                <field name="state" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div  t-attf-class=" oe_kanban_global_click o_has_icon oe_kanban_content oe_kanban_card">
+                            <div class="o_kanban_card_content mw-100">
+                                <div class="o_kanban_primary_left row">
+                                    <div class="col">
+                                        <strong>
+                                            <h3>
+                                                <field name="booking_id" style="padding-bottom:15px;"/>
+                                            </h3>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_bottom mt-3">
+                                    <div class="oe_kanban_bottom_left">
+                                        <span>Clearance Date:
+                                            <field name="customs_clearance_date"  decoration-bf="1"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+</odoo>

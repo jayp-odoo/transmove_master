@@ -25,6 +25,10 @@
         <field name="arch" type="xml">
             <form string="">
                 <header>
+                    <button string="Scheduled" name="action_scheduled" type="object" class="oe_highlight" invisible="state not in ['pending']"/>
+                    <button string="Completed" name="action_complete" type="object" class="btn-success" invisible="state not in ['scheduled']"/>
+                    <button string="Cancel" name="action_cancel" type="object" invisible="state in ['cancelled']"/>
+                    <button string="back to pending" name="action_back_to_pending" type="object" invisible="state not in ['cancelled']"/>
                     <field name="state" widget="statusbar" options="{'clickable':'1'}"/>
                 </header>
                 <sheet>
@@ -69,6 +73,9 @@
                                         <span>Pickup Date:
                                             <field name="pickup_date"  decoration-bf="1"/>
                                         </span>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="driver_id" widget="many2one_avatar_user"/>
                                     </div>
                                 </div>
                             </div>

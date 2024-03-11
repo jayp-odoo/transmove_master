@@ -2,8 +2,15 @@ from odoo import api, fields, models
 
 
 class TransmoveBookings(models.Model):
+    """
+    this model is responsible to handle bookings, which
+    considered as most important model because it is connected with major models
+    """
+
     _name = "transmove.bookings"
     _description = "Booking for shipment"
+    _order = "priority desc, id desc"
+    _inherit = ["mail.thread"]
 
     order_id = fields.Many2one(
         "sale.order", string="Order", required=True, ondelete="cascade"
@@ -65,6 +72,10 @@ class TransmoveBookings(models.Model):
 
     @api.depends("order_id")
     def _compute_cargo_pickup_date(self):
+        """
+        this method will compute the cargo pickup date with the use of order date + transit time - 3 days
+        buffer time
+        """
         for record in self:
             record.cargo_pickup_date = fields.Date.add(
                 record.order_id.date_order, days=int(record.order_id.transit_time) - 3
@@ -72,6 +83,9 @@ class TransmoveBookings(models.Model):
 
     @api.depends("order_id")
     def _compute_display_name(self):
+        """
+        this method will assign display name to it uniquely created serial number
+        """
         for record in self:
             record.display_name = record.order_id.name
 
@@ -97,9 +111,40 @@ class TransmoveBookings(models.Model):
             record.state = "custom_cleared"
 
     def action_cancelled(self):
+        """
+        this button action is used to cancel the booking also we need to cancel pickup requests
+        as well as custom clearance requests
+        """
         for record in self:
             record.state = "cancelled"
+            pickup_obj = self.env["transmove.pickup.requests"].search(
+                [("bookings_id", "=", record.id)]
+            )
+            custom_obj = self.env["transmove.customs.clearance"].search(
+                [("booking_id", "=", record.id)]
+            )
+            if pickup_obj and custom_obj:
+                pickup_obj.state = "cancelled"
+                custom_obj.state = "cancelled"
 
     def action_backtodraft(self):
         for record in self:
             record.state = "draft"
+            pickup_obj = self.env["transmove.pickup.requests"].search(
+                [("bookings_id", "=", record.id)]
+            )
+            custom_obj = self.env["transmove.customs.clearance"].search(
+                [("booking_id", "=", record.id)]
+            )
+            if pickup_obj and custom_obj:
+                pickup_obj.state = "pending"
+                custom_obj.state = "draft"
+
+    def action_load_to_container(self):
+        self.state = "load_to_container"
+
+    def action_on_the_sky(self):
+        self.state = "on_the_sky"
+
+    def action_won(self):
+        self.state = "won"
