@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import api, Command, fields, models
+from odoo.exceptions import UserError
 
 
 class TransmoveBookings(models.Model):
@@ -15,6 +16,7 @@ class TransmoveBookings(models.Model):
     order_id = fields.Many2one(
         "sale.order", string="Order", required=True, ondelete="cascade"
     )
+    invoice_id = fields.Many2one("account.move")
     consignee = fields.Many2one("res.partner", string="Receiver/Consignee")
     customer = fields.Many2one(string="Customer", related="order_id.partner_id")
     t_time = fields.Char("Transit time", related="order_id.transit_time")
@@ -128,6 +130,9 @@ class TransmoveBookings(models.Model):
                 custom_obj.state = "cancelled"
 
     def action_backtodraft(self):
+        """
+        to transfer the back to draft state we also need to change state of pickup requests and customs requests
+        """
         for record in self:
             record.state = "draft"
             pickup_obj = self.env["transmove.pickup.requests"].search(
@@ -147,4 +152,54 @@ class TransmoveBookings(models.Model):
         self.state = "on_the_sky"
 
     def action_won(self):
+        """
+        once the state in won then invoice should be created with this method
+        also we need invoice id to be stored for state button.
+        """
         self.state = "won"
+        vals = {
+            "partner_id": self.customer.id,
+            "move_type": "out_invoice",
+            "invoice_date": (fields.Date.today()).strftime("%Y-%m-%d"),
+            "currency_id": self.currency.id,
+            "amount_total_signed": self.total_amount,
+            "invoice_line_ids": [
+                Command.create(
+                    {
+                        "name": "Service Fees",
+                        "quantity": 1,
+                        "price_unit": self.total_amount,
+                        "currency_id": self.currency.id,
+                    }
+                ),
+                Command.create(
+                    {
+                        "name": "Administrative fees",
+                        "quantity": 1,
+                        "price_unit": 100.00,
+                        "currency_id": self.currency.id,
+                    }
+                ),
+            ],
+        }
+
+        moves = self.env["account.move"].create(vals)
+        self.invoice_id = moves.id
+
+    def open_invoice(self):
+        """
+        this method will open the particular invoice in form view with given invoice id
+        and we return action in context.
+        """
+        if self.invoice_id:
+            return {
+                "type": "ir.actions.act_window",
+                "name": "Invoice",
+                "res_model": "account.move",
+                "res_id": self.invoice_id.id,
+                "view_mode": "form",
+                "view_type": "form",
+                "target": "current",
+            }
+        else:
+            raise UserError("Invoice not found")

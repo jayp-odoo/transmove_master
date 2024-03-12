@@ -41,6 +41,16 @@
                     <field name="state" widget="statusbar" options="{'clickable':'1'}" statusbar_visible="draft,confirmed,custom_cleared"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box" invisible="state not in ['won']">
+                        <button name="open_invoice" class="oe_stat_button" type="object" icon="fa-book">
+                            <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    
+                                </span>
+                                <span class="o_stat_text" style="margin-left:7px;font-size:14px;" >Invoice</span>
+                            </div>
+                        </button>
+                    </div>
                     <h1>
                         <field name="order_id"></field>
                     </h1>
