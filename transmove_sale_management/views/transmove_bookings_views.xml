@@ -3,7 +3,8 @@
     <record id="transmove_bookings_action" model="ir.actions.act_window">
         <field name="name">bookings</field>
         <field name="res_model">transmove.bookings</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,tree,form,search</field>
+        <field name="context">{'search_default_currentmonth':1}</field>
     </record>
     <!-- tree view  -->
     <record id="transmove_bookings_view_tree" model="ir.ui.view">
@@ -135,6 +136,18 @@
                     </t>
                 </templates>
             </kanban>
+        </field>
+    </record>
+    <!-- search view  -->
+    <record id="transmove_bookings_view_search" model="ir.ui.view">
+        <field name="name">transmove.bookings.view.search</field>
+        <field name="model">transmove.bookings</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <field name="order_id"></field>
+                <field name="customer" />
+                <filter name="currentmonth" string="This Month" domain="[('order_id.date_order','&gt;=',context_today().strftime('%%Y-%%m-01')),('order_id.date_order','&lt;',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01'))]"/>
+            </search>
         </field>
     </record>
 </odoo>

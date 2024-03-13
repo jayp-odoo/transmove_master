@@ -10,7 +10,7 @@ class TransmoveBookings(models.Model):
 
     _name = "transmove.bookings"
     _description = "Booking for shipment"
-    _order = "priority desc, id desc"
+    _order = "priority desc"
     _inherit = ["mail.thread"]
 
     order_id = fields.Many2one(
@@ -163,10 +163,11 @@ class TransmoveBookings(models.Model):
             "invoice_date": (fields.Date.today()).strftime("%Y-%m-%d"),
             "currency_id": self.currency.id,
             "amount_total_signed": self.total_amount,
+            "narration": "- In case of any discrepancy in the invoice, please bring the same to our attention within 7 days of receipt of invoice else the same would be treated as correct. ",
             "invoice_line_ids": [
                 Command.create(
                     {
-                        "name": "Service Fees",
+                        "name": f"From : {self.order_id.origin_city_id.name} \nTo: {self.order_id.destination_city_id.name} \nAirline : {self.airline}",
                         "quantity": 1,
                         "price_unit": self.total_amount,
                         "currency_id": self.currency.id,
@@ -174,9 +175,33 @@ class TransmoveBookings(models.Model):
                 ),
                 Command.create(
                     {
-                        "name": "Administrative fees",
+                        "name": "AMS Charges-T fees",
+                        "quantity": 1,
+                        "price_unit": 1600.00,
+                        "currency_id": self.currency.id,
+                    }
+                ),
+                Command.create(
+                    {
+                        "name": "Airways Bill",
+                        "quantity": 1,
+                        "price_unit": 900.00,
+                        "currency_id": self.currency.id,
+                    }
+                ),
+                Command.create(
+                    {
+                        "name": "Custom Clearance",
                         "quantity": 1,
                         "price_unit": 100.00,
+                        "currency_id": self.currency.id,
+                    }
+                ),
+                Command.create(
+                    {
+                        "name": "GSEC",
+                        "quantity": 1,
+                        "price_unit": 550.00,
                         "currency_id": self.currency.id,
                     }
                 ),

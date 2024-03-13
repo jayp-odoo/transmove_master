@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="transmove_invoice" name="transmove_invoice" inherit_id="account.report_invoice_document">
+        <xpath expr="//div[@name='reference']" position="after">
+            <div style="margin-top:20px;margin-bottom:20px;">
+                <strong>Type: Freight Forwarding Service</strong>
+            </div>
+        </xpath>
+    </template>
+</odoo>

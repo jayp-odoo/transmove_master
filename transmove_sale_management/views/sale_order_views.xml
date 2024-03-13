@@ -22,8 +22,8 @@
             <xpath expr="//page[@name='order_lines']" position="after">
                 <page string="Address Information">
                     <group name="addressinfo">
-                        <field name="origin_city_id" />
-                        <field name="destination_city_id" />
+                        <field name="origin_city_id" domain="[('id','!=',destination_city_id)]"/>
+                        <field name="destination_city_id" domain="[('id','!=',origin_city_id)]"/>
                     </group>
                     <group name="tandc" string="Instructions Details">
                         <field name="description"></field>
@@ -46,7 +46,7 @@
         <field name="arch" type="xml">
             <xpath expr="//kanban" position="replace">
                 <kanban default_group_by="state" >
-                    <progressbar field="priority" colors='{"3": "success", "2": "warning", "1": "danger", "0": "info"}'/>
+                    <progressbar field="priority" colors='{"3": "success", "2": "warning", "1": "info", "0": "danger"}'/>
                     <field name="state" />
                     <templates>
                         <t t-name="kanban-box">

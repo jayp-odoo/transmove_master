@@ -16,6 +16,7 @@
         "views/transmove_documents_views.xml",
         "views/transmove_pickup_requests_views.xml",
         "views/transmove_customs_clearances_views.xml",
+        "report/sale_order_invoice_report_template.xml",
     ],
     "installable": True,
     "auto_install": True,

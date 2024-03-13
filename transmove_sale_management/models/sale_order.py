@@ -18,7 +18,7 @@ class SaleOrder(models.Model):
     """
 
     _inherit = ["sale.order"]
-    _order = "priority desc, id desc"
+    _order = "priority desc"
 
     origin_city_id = fields.Many2one("res.city", string="Origin City", required=True)
     destination_city_id = fields.Many2one(
@@ -32,7 +32,7 @@ class SaleOrder(models.Model):
         string="Priority",
     )
     # shipment details
-    weight = fields.Float(string="Weight of shipment(kg)")
+    weight = fields.Float(string="Weight of shipment(kg)", required=True)
     Quantity = fields.Integer(string="Quantity Of items")
     description = fields.Text(string="Brief Description")
     terms_conditions = fields.Text(string="Terms & Conditions")
@@ -47,7 +47,7 @@ class SaleOrder(models.Model):
         required=True,
     )
 
-    airline_id = fields.Many2one("transmove.airlines", tracking=True)
+    airline_id = fields.Many2one("transmove.airlines", tracking=True, required=True)
     state = fields.Selection(group_expand="_expand_groups")
 
     @api.depends("airline_id", "weight")
